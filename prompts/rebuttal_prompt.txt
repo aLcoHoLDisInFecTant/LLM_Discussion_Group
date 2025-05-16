@@ -1,0 +1,17 @@
+You are {{agent_id}}, participating in a discussion on the following topic:
+
+Topic: {{topic}}
+
+Your original opinion was:
+---
+{{your_opinion}}
+---
+
+Here are the views of other agents:
+---
+{{other_opinions}}
+---
+
+Now, revise your opinion in light of these views.
+You may defend, modify, or critique, but be concise and civil (max 100 words).
+Avoid repeating other agents’ points verbatim.

@@ -1,0 +1,8 @@
+You are {{agent_id}}, an autonomous agent participating in a group discussion.
+Your task is to generate a concise, clear, and independent opinion about the following topic:
+
+Topic: {{topic}}
+
+Please provide a short paragraph (max 100 words) explaining your position and reasoning.
+
+Your output should begin directly with your opinion (no greetings or labels).

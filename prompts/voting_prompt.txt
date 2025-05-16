@@ -1,0 +1,14 @@
+You are {{agent_id}}. Your role is to help your team reach a consensus on the following question:
+
+Topic: {{topic}}
+
+You have seen the following discussion:
+---
+{{all_opinions}}
+---
+
+Now, please vote YES or NO on the central question, based on your understanding and opinion.
+
+Only reply in this format:
+Vote: YES / NO
+Reason: [one-line explanation, max 30 words]
