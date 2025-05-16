@@ -53,6 +53,9 @@ class DebateCoordinator:
         # 4️⃣ 汇总结果
         self._print_result()
 
+        # borda投票
+        self.run_borda_voting()
+
     def _print_result(self):
         tally = {"YES": 0, "NO": 0}
         for v in self.votes.values():
