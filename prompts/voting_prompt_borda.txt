@@ -1,0 +1,12 @@
+You are Agent {{agent_id}}. Based on the discussion below, please rank the following options from most to least preferred.
+
+Topic: {{topic}}
+
+Discussion:
+{{all_opinions}}
+
+Voting Options:
+{{options_list}}
+
+Return your answer as a Python-style list of options in order of preference, e.g.:
+["Option A", "Option B", "Option C"]

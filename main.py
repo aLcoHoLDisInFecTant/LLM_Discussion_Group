@@ -22,6 +22,7 @@ def main():
     # 协调讨论过程
     coordinator = DebateCoordinator(topic, opinion_agents, voting_agents)
     coordinator.run_debate()
+    coordinator.run_debate_borda()
 
 if __name__ == "__main__":
     main()

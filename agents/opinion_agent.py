@@ -3,6 +3,7 @@
 import os
 from openai_client import call_llm
 from prompt_utils import load_prompt
+from agents.refiner_agent import RefinerAgent
 
 PROMPT_PATH = os.path.join("prompts", "opinion_prompt.txt")
 REBUTTAL_PATH = os.path.join("prompts", "rebuttal_prompt.txt")
@@ -20,7 +21,18 @@ class OpinionAgent:
             "topic": topic
         })
         self.original_opinion = call_llm(prompt, model=self.model)
+
+        # ✨ 模糊判断触发修正
+        if self._is_vague(self.original_opinion):
+            refiner = RefinerAgent(model=self.model)
+            refined = refiner.refine_opinion(self.agent_id, topic, self.original_opinion)
+            if refined:
+                self.original_opinion = refined
         return self.original_opinion
+
+    def _is_vague(self, text: str) -> bool:
+        vague_keywords = ["it depends", "both sides", "hard to say", "unclear", "not sure", "middle ground"]
+        return any(kw in text.lower() for kw in vague_keywords)
 
     def generate_rebuttal(self, topic, other_opinions: dict):
         # 组装其他代理的观点为字符串段落

@@ -2,6 +2,8 @@
 
 from agents.opinion_agent import OpinionAgent
 from agents.voting_agent import VotingAgent
+from llm_utils import llm_generate_options
+from agents.borda_aggregator import BordaVotingAggregator
 from openai_client import call_llm
 from prompt_utils import load_prompt
 import os
@@ -57,3 +59,31 @@ class DebateCoordinator:
             tally[v] += 1
         print(f"\n✅ 最终共识：{'YES' if tally['YES'] > tally['NO'] else 'NO'}")
         print(f"📊 投票分布：{tally}")
+
+    # coordinator.py（添加方法）
+
+    def run_borda_voting(self):
+        print("\n🔍 使用 LLM 自动生成投票选项中...\n")
+        options = llm_generate_options(self.topic)
+
+        if not options:
+            print("⚠️ 无法生成有效选项，使用默认三选项。")
+            options = ["Support", "Neutral", "Oppose"]
+
+        print(f"✅ 投票选项生成：{options}\n")
+
+        aggregator = BordaVotingAggregator(options)
+
+        for agent in self.voting_agents:
+            ranked = agent.cast_borda_vote(self.topic, self.rebuttals, options)
+            if ranked:
+                aggregator.add_vote(ranked)
+                print(f"[{agent.agent_id} 排序] {ranked}")
+            else:
+                print(f"[{agent.agent_id}] 投票格式无效，跳过。")
+
+        result = aggregator.compute_result()
+        print(f"\n🎯 最终共识：{result['winner']}")
+        print("📊 得分分布：")
+        for opt, score in result["scores"].items():
+            print(f"{opt}: {score}")
